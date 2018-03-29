@@ -104,6 +104,22 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
+		<url-pattern>*.map</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.woff</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.woff2</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.ttf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
@@ -160,7 +176,4 @@
 			<include-prelude>/WEB-INF/common/head.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
 </web-app>
