@@ -15,6 +15,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.shunxin.web.dao.user.IRoleDao;
@@ -64,6 +65,7 @@ public class UserServiceImpl implements IUserService {
 	 * @see com.shunxin.web.service.user.IUserService#getUserByUserName(java.lang.String)
 	 */
 	@Override
+	@Cacheable(value="ehcCache",key="#userName")
 	public UserVo getUserByUserName(final String userName) {
 
 		UserVo userVo = null;
