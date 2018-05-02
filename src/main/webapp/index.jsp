@@ -10,8 +10,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <meta charset="UTF-8">
 <base href="<%=basePath%>">
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>login</title>
 	<script type="text/javascript" src="<%=path%>/resources/js/jquery.min.js"></script>
 	<link type="text/css" href="<%=path%>/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link type="text/css" href="<%=path%>/resources/css/style.css" rel="stylesheet">
     <script type="text/javascript" src="<%=path%>/resources/js/layer.js"></script>
     <script type="text/javascript" src="<%=path%>/resources/js/jquery.md5.js"></script>
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script type="text/javascript">
 	function keyLogin(){    
         if (event.keyCode==13){
@@ -70,15 +68,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
         });     
     }
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    $.ajaxSetup({
-        beforeSend: function (xhr) {
-            if(header && token ){
-                xhr.setRequestHeader(header, token);
-            }
-        }}
-    );	
 	</script>
 	
 </head>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinjian.wechat.mapper.service.WeChatTextMessageMapper">
+  <resultMap id="BaseResultMap" type="com.xinjian.wechat.pojo.service.WeChatTextMessage">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, msg_id, content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_wechat_text_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_wechat_text_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xinjian.wechat.pojo.service.WeChatTextMessage">
+    insert into t_wechat_text_message (id, msg_id, content
+      )
+    values (#{id,jdbcType=INTEGER}, #{msgId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinjian.wechat.pojo.service.WeChatTextMessage">
+    insert into t_wechat_text_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinjian.wechat.pojo.service.WeChatTextMessage">
+    update t_wechat_text_message
+    <set>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinjian.wechat.pojo.service.WeChatTextMessage">
+    update t_wechat_text_message
+    set msg_id = #{msgId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

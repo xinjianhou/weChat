@@ -2,9 +2,9 @@ package simple;
 
 import java.util.ArrayList;
 
-import com.shunxin.wechat.service.message.response.Article;
-import com.shunxin.wechat.service.message.response.NewsResMessage;
 import com.thoughtworks.xstream.XStream;
+import com.xinjian.wechat.service.message.response.Article;
+import com.xinjian.wechat.service.message.response.NewsResMessage;
 
 /**
  * @author xinjianhou

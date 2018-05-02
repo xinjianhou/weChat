@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shunxin.web.mapper.user.UserMapper">
-  <resultMap id="BaseResultMap" type="com.shunxin.web.pojo.user.User">
+<mapper namespace="com.xinjian.web.mapper.user.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xinjian.web.pojo.user.User">
     <id column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -29,7 +29,7 @@
     delete from t_user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.shunxin.web.pojo.user.User">
+  <insert id="insert" parameterType="com.xinjian.web.pojo.user.User">
     insert into t_user (user_id, user_name, password, 
       real_name, status, create_time, 
       update_time)
@@ -37,7 +37,7 @@
       #{realName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.shunxin.web.pojo.user.User">
+  <insert id="insertSelective" parameterType="com.xinjian.web.pojo.user.User">
     insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -86,7 +86,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shunxin.web.pojo.user.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinjian.web.pojo.user.User">
     update t_user
     <set>
       <if test="userName != null">
@@ -110,7 +110,7 @@
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shunxin.web.pojo.user.User">
+  <update id="updateByPrimaryKey" parameterType="com.xinjian.web.pojo.user.User">
     update t_user
     set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

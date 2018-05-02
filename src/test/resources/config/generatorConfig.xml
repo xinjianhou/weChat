@@ -25,35 +25,71 @@
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<!-- 生成模型的包名和位置 -->
-		<javaModelGenerator targetPackage="com.shunxin.web.pojo"
+		<javaModelGenerator targetPackage="com.xinjian.wechat.pojo.user"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<!-- 生成映射文件的包名和位置 -->
-		<sqlMapGenerator targetPackage="mapping"
+		<sqlMapGenerator targetPackage="mapping.wechat"
 			targetProject="src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 		<!-- 生成DAO的包名和位置 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.shunxin.web.mapper" implementationPackage="com.shunxin.web.dao.impl"
+			targetPackage="com.xinjian.wechat.mapper.user" implementationPackage="com.xinjian.wechat.dao.user.impl"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
 		<!-- 要生成哪些表 -->
-		<table tableName="t_user" domainObjectName="User"
+		<table tableName="t_wechat_user_info" domainObjectName="WechatUser"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>
-		<table tableName="t_role" domainObjectName="Role"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
-		<table tableName="t_user_role" domainObjectName="UserRole"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
+<!-- 		<table tableName="t_wechat_location_event" domainObjectName="WeChatLocationEvent" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_menu_event" domainObjectName="WeChatMenuEvent" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_qrcode_event" domainObjectName="WeChatQRCodeEvent" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_message" domainObjectName="WeChatMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_img_message" domainObjectName="WeChatImgMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_link_message" domainObjectName="WeChatLinkMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_location_message" domainObjectName="WeChatLocationMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_text_message" domainObjectName="WeChatTextMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_video_message" domainObjectName="WeChatVideoMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_voice_message" domainObjectName="WeChatVoiceMessage" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
+<!-- 		<table tableName="t_wechat_exception" domainObjectName="WeChatException" -->
+<!-- 			enableCountByExample="false" enableUpdateByExample="false" -->
+<!-- 			enableDeleteByExample="false" enableSelectByExample="false" -->
+<!-- 			selectByExampleQueryId="false"></table> -->
 	</context>
 </generatorConfiguration>

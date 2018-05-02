@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinjian.wechat.mapper.service.WeChatMessageMapper">
+  <resultMap id="BaseResultMap" type="com.xinjian.wechat.pojo.service.WeChatMessage">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="to_user_name" jdbcType="VARCHAR" property="toUserName" />
+    <result column="from_user_name" jdbcType="VARCHAR" property="fromUserName" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="msg_type" jdbcType="VARCHAR" property="msgType" />
+    <result column="msg_id" jdbcType="BIGINT" property="msgId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, to_user_name, from_user_name, create_time, msg_type, msg_id
+  </sql>
+  <sql id="query_item_where">
+	<if test="toUserName != null">
+	    to_user_name LIKE '%${toUserName}%'
+	</if>
+	<if test="fromUserName != null">
+	  	and from_user_name LIKE '%${fromUserName}%'
+	</if>
+	<if test="createTime != null">
+	  	and create_time = ${createTime}
+	</if>
+	<if test="msgType != null">
+	  	and msg_type LIKE '%${msgType}%'
+	</if>
+	<if test="msgId != null">
+	   	and msg_id LIKE '%${msgId}%'
+	</if>
+  </sql>
+   <select id="findItem" parameterType="com.xinjian.wechat.pojo.service.WeChatMessage"  resultMap="BaseResultMap">
+	SELECT 
+	<include refid="Base_Column_List" />
+    from t_wechat_message
+	<where>
+ 		<include refid="query_item_where"></include>
+  	</where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_wechat_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_wechat_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xinjian.wechat.pojo.service.WeChatMessage" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into t_wechat_message (id, to_user_name, from_user_name, 
+      create_time, msg_type, msg_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{toUserName,jdbcType=VARCHAR}, #{fromUserName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{msgType,jdbcType=VARCHAR}, #{msgId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinjian.wechat.pojo.service.WeChatMessage">
+    insert into t_wechat_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="toUserName != null">
+        to_user_name,
+      </if>
+      <if test="fromUserName != null">
+        from_user_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="msgType != null">
+        msg_type,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="toUserName != null">
+        #{toUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="fromUserName != null">
+        #{fromUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="msgType != null">
+        #{msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinjian.wechat.pojo.service.WeChatMessage">
+    update t_wechat_message
+    <set>
+      <if test="toUserName != null">
+        to_user_name = #{toUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="fromUserName != null">
+        from_user_name = #{fromUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="msgType != null">
+        msg_type = #{msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinjian.wechat.pojo.service.WeChatMessage">
+    update t_wechat_message
+    set to_user_name = #{toUserName,jdbcType=VARCHAR},
+      from_user_name = #{fromUserName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      msg_type = #{msgType,jdbcType=VARCHAR},
+      msg_id = #{msgId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

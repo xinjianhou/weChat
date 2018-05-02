@@ -3,7 +3,7 @@
 
 <beans>
 	<!-- 要调用的工作类 -->
-	<bean id="quartzJob" class="com.shunxin.wechat.quartz.QuartzJob"></bean>
+	<bean id="quartzJob" class="com.xinjian.wechat.quartz.QuartzJob"></bean>
 
 	<!-- 定义调用对象和调用对象的方法 -->
 	<bean id="jobtaskForToken"
@@ -16,7 +16,6 @@
 		<property name="targetMethod">
 			<value>workForToken</value>
 		</property>
-
 	</bean>
 	<!-- 定义触发时间 -->
 	<bean id="doTimeForToken"

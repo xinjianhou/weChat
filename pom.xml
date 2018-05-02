@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.shunxin</groupId>
+	<groupId>com.xinjian</groupId>
 	<artifactId>WeChat</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
@@ -264,6 +264,18 @@
 			<artifactId>sitemesh</artifactId>
 			<version>3.0.1</version>
 		</dependency>
+		<!-- redis cache related.....start -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			 <version>2.0.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<!-- redis cache related.....end -->
 	</dependencies>
 	<build>
 		<finalName>WeChat</finalName>

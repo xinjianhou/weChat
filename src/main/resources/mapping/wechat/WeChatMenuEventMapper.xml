@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinjian.wechat.mapper.service.WeChatMenuEventMapper">
+  <resultMap id="BaseResultMap" type="com.xinjian.wechat.pojo.service.WeChatMenuEvent">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="event_id" jdbcType="INTEGER" property="eventId" />
+    <result column="event_key" jdbcType="VARCHAR" property="eventKey" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, event_id, event_key
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_wechat_menu_event
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_wechat_menu_event
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xinjian.wechat.pojo.service.WeChatMenuEvent">
+    insert into t_wechat_menu_event (id, event_id, event_key
+      )
+    values (#{id,jdbcType=INTEGER}, #{eventId,jdbcType=INTEGER}, #{eventKey,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinjian.wechat.pojo.service.WeChatMenuEvent">
+    insert into t_wechat_menu_event
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="eventKey != null">
+        event_key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventKey != null">
+        #{eventKey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinjian.wechat.pojo.service.WeChatMenuEvent">
+    update t_wechat_menu_event
+    <set>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventKey != null">
+        event_key = #{eventKey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinjian.wechat.pojo.service.WeChatMenuEvent">
+    update t_wechat_menu_event
+    set event_id = #{eventId,jdbcType=INTEGER},
+      event_key = #{eventKey,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinjian.wechat.mapper.service.WeChatLocationMessageMapper">
+  <resultMap id="BaseResultMap" type="com.xinjian.wechat.pojo.service.WeChatLocationMessage">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="location_x" jdbcType="VARCHAR" property="locationX" />
+    <result column="location_y" jdbcType="VARCHAR" property="locationY" />
+    <result column="scale" jdbcType="VARCHAR" property="scale" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, msg_id, location_x, location_y, scale, label
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_wechat_location_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_wechat_location_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xinjian.wechat.pojo.service.WeChatLocationMessage">
+    insert into t_wechat_location_message (id, msg_id, location_x, 
+      location_y, scale, label
+      )
+    values (#{id,jdbcType=INTEGER}, #{msgId,jdbcType=INTEGER}, #{locationX,jdbcType=VARCHAR}, 
+      #{locationY,jdbcType=VARCHAR}, #{scale,jdbcType=VARCHAR}, #{label,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinjian.wechat.pojo.service.WeChatLocationMessage">
+    insert into t_wechat_location_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="locationX != null">
+        location_x,
+      </if>
+      <if test="locationY != null">
+        location_y,
+      </if>
+      <if test="scale != null">
+        scale,
+      </if>
+      <if test="label != null">
+        label,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="locationX != null">
+        #{locationX,jdbcType=VARCHAR},
+      </if>
+      <if test="locationY != null">
+        #{locationY,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        #{scale,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        #{label,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinjian.wechat.pojo.service.WeChatLocationMessage">
+    update t_wechat_location_message
+    <set>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="locationX != null">
+        location_x = #{locationX,jdbcType=VARCHAR},
+      </if>
+      <if test="locationY != null">
+        location_y = #{locationY,jdbcType=VARCHAR},
+      </if>
+      <if test="scale != null">
+        scale = #{scale,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinjian.wechat.pojo.service.WeChatLocationMessage">
+    update t_wechat_location_message
+    set msg_id = #{msgId,jdbcType=INTEGER},
+      location_x = #{locationX,jdbcType=VARCHAR},
+      location_y = #{locationY,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=VARCHAR},
+      label = #{label,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

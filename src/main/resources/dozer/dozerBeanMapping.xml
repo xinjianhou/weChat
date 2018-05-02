@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://dozer.sourceforge.net
+	xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
-  <mapping date-format="yyyy-MM-dd">
-    <class-a>com.shunxin.web.pojo.BasePOJO</class-a>
-    <class-b>com.shunxin.web.vo.BaseVo</class-b>
-  </mapping>
+	
+	<mapping date-format="yyyy-MM-dd">
+		<class-a>com.xinjian.web.pojo.BasePOJO</class-a>
+		<class-b>com.xinjian.web.vo.BaseVo</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.xinjian.wechat.pojo.service.WeChatEvent</class-a>
+		<class-b>com.xinjian.wechat.service.event.BaseEvent</class-b>
+		<field>
+			<a>toUserName</a>
+			<b>ToUserName</b>  
+		</field>
+		<field>
+			<a>fromUserName</a>
+			<b>FromUserName</b>  
+		</field>
+		<field>
+			<a>msgType</a>
+			<b>MsgType</b>  
+		</field>
+		<field>
+			<a>createTime</a>
+			<b>CreateTime</b>  
+		</field>
+		<field>
+			<a>event</a>
+			<b>Event</b>  
+		</field>
+	</mapping>
 </mappings>
