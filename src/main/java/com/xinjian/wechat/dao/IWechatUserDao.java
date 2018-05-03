@@ -1,19 +1,26 @@
-package com.xinjian.wechat.mapper.user;
+/**
+ * @Title: IWechatUserDao.java
+ * @Package com.xinjian.wechat.dao
+ * @Description: TODO
+ * @author xinjianhou
+ * @date May 2, 2018 8:32:32 PM
+ * @version V1.0
+ */
+
+package com.xinjian.wechat.dao;
 
 import java.util.List;
-
-import org.springframework.stereotype.Repository;
 
 import com.xinjian.wechat.pojo.user.WechatUser;
 
 /**
- * <p>Title: WechatUserMapper</p>
+ * <p>Title: IWechatUserDao</p>
  * <p>Description: </p>
  * @author xinjianhou
- * @date Apr 24, 2018
+ * @date May 2, 2018
  */
-@Repository
-public interface WechatUserMapper {
+public interface IWechatUserDao {
+
 	/**
 	 * <p>Title: deleteByPrimaryKey </p>
 	 * <p>Description: </p>
