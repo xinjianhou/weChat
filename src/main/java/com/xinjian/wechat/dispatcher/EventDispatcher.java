@@ -43,7 +43,7 @@ public class EventDispatcher {
 		imgmsg.setToUserName(openid);
 		imgmsg.setFromUserName(mpid);
 		imgmsg.setCreateTime(new Date().getTime());
-		imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_Image);
+		imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_IMAGE);
 		switch(map.get("Event")){
 		case MessageUtil.EVENT_TYPE_CLICK:
 			System.out.println("=============click");

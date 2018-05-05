@@ -75,7 +75,7 @@ public class MsgDispatcher {
 			imgmsg.setToUserName(openid);
 			imgmsg.setFromUserName(mpid);
 			imgmsg.setCreateTime(new Date().getTime());
-			imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_Image);
+			imgmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_IMAGE);
 
 			img.setMediaId("o538VwoHLrUkxbpnfrl9CIOvp40SAn3QMLHEwkYumGBaNn4KxOAb0p7bZGYOXXnB");
 			imgmsg.setImage(img);
