@@ -14,6 +14,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -58,6 +59,8 @@ public class HttpPostUploadUtil {
 			final Map<String, String> fileMap) {
 		String res = "";
 		HttpURLConnection conn = null;
+		DataInputStream in = null;
+		OutputStream out= null;
 		final String BOUNDARY = "---------------------------123821742118716"; //boundary就是request头和上传文件内容的分隔符
 		try {
 			final URL url = new URL(urlStr);
@@ -75,75 +78,82 @@ public class HttpPostUploadUtil {
 			conn.setRequestProperty("Content-Type",
 					"multipart/form-data; boundary=" + BOUNDARY);
 
-			final OutputStream out = new DataOutputStream(conn.getOutputStream());
-			// text
-			if (textMap != null) {
-				final StringBuffer strBuf = new StringBuffer();
-				final Iterator<?> iter = textMap.entrySet().iterator();
-				while (iter.hasNext()) {
-					final Map.Entry entry = (Map.Entry) iter.next();
-					final String inputName = (String) entry.getKey();
-					final String inputValue = (String) entry.getValue();
-					if (inputValue == null) {
-						continue;
-					}
-					strBuf.append("\r\n").append("--").append(BOUNDARY).append(
-							"\r\n");
-					strBuf.append("Content-Disposition: form-data; name=\""
-							+ inputName + "\"\r\n\r\n");
-					strBuf.append(inputValue);
-				}
-				out.write(strBuf.toString().getBytes());
-			}
-
-			// file
-			if (fileMap != null) {
-				final Iterator<?> iter = fileMap.entrySet().iterator();
-				while (iter.hasNext()) {
-					final Map.Entry entry = (Map.Entry) iter.next();
-					final String inputName = (String) entry.getKey();
-					final String inputValue = (String) entry.getValue();
-					if (inputValue == null) {
-						continue;
-					}
-					final File file = new File(inputValue);
-					final String filename = file.getName();
-					String contentType = new MimetypesFileTypeMap()
-							.getContentType(file);
-					if (filename.endsWith(".jpg")||filename.endsWith(".JPG")) {
-						contentType = "image/jpg";
-					}else {
-						contentType = "image/png";
-					}
-					if (contentType == null || contentType.equals("")) {
-						contentType = "application/octet-stream";
-					}
-
+			try {
+				out = new DataOutputStream(conn.getOutputStream());
+				// text
+				if (textMap != null) {
 					final StringBuffer strBuf = new StringBuffer();
-					strBuf.append("\r\n").append("--").append(BOUNDARY).append(
-							"\r\n");
-					strBuf.append("Content-Disposition: form-data; name=\""
-							+ inputName + "\"; filename=\"" + filename
-							+ "\"\r\n");
-					strBuf.append("Content-Type:" + contentType + "\r\n\r\n");
-
-					out.write(strBuf.toString().getBytes());
-
-					final DataInputStream in = new DataInputStream(
-							new FileInputStream(file));
-					int bytes = 0;
-					final byte[] bufferOut = new byte[1024];
-					while ((bytes = in.read(bufferOut)) != -1) {
-						out.write(bufferOut, 0, bytes);
+					final Iterator<?> iter = textMap.entrySet().iterator();
+					while (iter.hasNext()) {
+						final Map.Entry entry = (Map.Entry) iter.next();
+						final String inputName = (String) entry.getKey();
+						final String inputValue = (String) entry.getValue();
+						if (inputValue == null) {
+							continue;
+						}
+						strBuf.append("\r\n").append("--").append(BOUNDARY).append(
+								"\r\n");
+						strBuf.append("Content-Disposition: form-data; name=\""
+								+ inputName + "\"\r\n\r\n");
+						strBuf.append(inputValue);
 					}
-					in.close();
+					out.write(strBuf.toString().getBytes());
 				}
+
+				// file
+				if (fileMap != null) {
+					final Iterator<?> iter = fileMap.entrySet().iterator();
+					while (iter.hasNext()) {
+						final Map.Entry entry = (Map.Entry) iter.next();
+						final String inputName = (String) entry.getKey();
+						final String inputValue = (String) entry.getValue();
+						if (inputValue == null) {
+							continue;
+						}
+						final File file = new File(inputValue);
+						final String filename = file.getName();
+						String contentType = new MimetypesFileTypeMap()
+								.getContentType(file);
+						if (filename.endsWith(".jpg")||filename.endsWith(".JPG")) {
+							contentType = "image/jpg";
+						}else {
+							contentType = "image/png";
+						}
+						if (contentType == null || contentType.equals("")) {
+							contentType = "application/octet-stream";
+						}
+
+						final StringBuffer strBuf = new StringBuffer();
+						strBuf.append("\r\n").append("--").append(BOUNDARY).append(
+								"\r\n");
+						strBuf.append("Content-Disposition: form-data; name=\""
+								+ inputName + "\"; filename=\"" + filename
+								+ "\"\r\n");
+						strBuf.append("Content-Type:" + contentType + "\r\n\r\n");
+
+						out.write(strBuf.toString().getBytes());
+
+						in = new DataInputStream(
+								new FileInputStream(file));
+						int bytes = 0;
+						final byte[] bufferOut = new byte[1024];
+						while ((bytes = in.read(bufferOut)) != -1) {
+							out.write(bufferOut, 0, bytes);
+						}
+
+					}
+				}
+
+				final byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
+				out.write(endData);
+			}catch(final IOException e) {
+				e.printStackTrace();
+			}finally{
+				in.close();
+				out.flush();
+				out.close();
 			}
 
-			final byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
-			out.write(endData);
-			out.flush();
-			out.close();
 
 			// 读取返回数据
 			final StringBuffer strBuf = new StringBuffer();
@@ -157,7 +167,6 @@ public class HttpPostUploadUtil {
 			reader.close();
 			reader = null;
 		} catch (final Exception e) {
-			System.out.println("发送POST请求出错。" + urlStr);
 			e.printStackTrace();
 		} finally {
 			if (conn != null) {
