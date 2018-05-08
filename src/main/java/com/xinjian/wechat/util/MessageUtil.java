@@ -56,17 +56,17 @@ public class MessageUtil {
 	/**
 	 * 返回消息类型：图片
 	 */
-	public static final String RESP_MESSAGE_TYPE_Image = "image";
+	public static final String RESP_MESSAGE_TYPE_IMAGE = "image";
 
 	/**
 	 * 返回消息类型：语音
 	 */
-	public static final String RESP_MESSAGE_TYPE_Voice = "voice";
+	public static final String RESP_MESSAGE_TYPE_VOICE = "voice";
 
 	/**
 	 * 返回消息类型：视频
 	 */
-	public static final String RESP_MESSAGE_TYPE_Video = "video";
+	public static final String RESP_MESSAGE_TYPE_VIDEO = "video";
 	/**
 	 * 返回消息类型：多客服消息
 	 */

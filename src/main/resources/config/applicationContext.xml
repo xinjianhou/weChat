@@ -157,11 +157,12 @@ http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 		<property name="configLocation" value="classpath:config/ehcache-setting.xml"></property>
 	</bean>
 	<!-- 支持缓存注解 -->
-    <cache:annotation-driven cache-manager="cacheManager" />
+<!--     <cache:annotation-driven cache-manager="ehCacheManager" /> -->
+    <cache:annotation-driven cache-manager="redisCacheManager" />
     <!-- 默认是cacheManager -->
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">  
-        <property name="cacheManager"  ref="ehcache"/>  
-    </bean>
+<!--     <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">   -->
+<!--         <property name="cacheManager"  ref="ehcache"/>   -->
+<!--     </bean> -->
     
      <!-- redis config start -->
     <!-- 配置JedisPoolConfig实例 -->
@@ -177,7 +178,7 @@ http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
         class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="hostName" value="${redis.host}" />
         <property name="port" value="${redis.port}" />
-        <!-- <property name="password" value="${redis.pass}" /> -->
+        <property name="password" value="${redis.pass}" />
         <property name="database" value="${redis.dbIndex}" />
         <property name="poolConfig" ref="poolConfig" />
     </bean>

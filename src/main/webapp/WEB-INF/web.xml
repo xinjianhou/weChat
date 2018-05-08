@@ -52,6 +52,9 @@
 	<listener>
 		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
 	</listener>
+	<listener>    
+       <listener-class>com.xinjian.web.util.RmdeskServletContextListener</listener-class>    
+	</listener> 
 	<servlet>
 		<description>spring mvc servlet</description>
 		<servlet-name>springMvc</servlet-name>
