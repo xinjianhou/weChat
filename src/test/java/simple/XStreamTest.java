@@ -50,4 +50,5 @@ public class XStreamTest {
 		return xs.toXML(o);
 	}
 
+
 }

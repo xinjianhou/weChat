@@ -1,14 +1,13 @@
 /**
- * @Title: POP3ReceiveMailTest.java
- * @Package com.xinjian.web.util
+ * @Title: ReceiveMaillServiceImpl.java
+ * @Package com.xinjian.web.service.mail.impl
  * @Description: TODO
  * @author xinjianhou
- * @date May 7, 2018 8:21:52 PM
+ * @date May 8, 2018 12:30:30 PM
  * @version V1.0
  */
 
-package com.xinjian.web.util;
-
+package com.xinjian.web.service.mail.impl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,6 +26,7 @@ import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
@@ -37,16 +37,26 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.fileupload.util.mime.MimeUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.xinjian.web.service.mail.IReceiveMaillService;
+import com.xinjian.web.service.mail.ISendMailService;
+import com.xinjian.wechat.util.GlobalConstants;
 
 /**
- * 邮件接受测试
- *
+ * <p>Title: ReceiveMaillServiceImpl</p>
+ * <p>Description: </p>
+ * @author xinjianhou
+ * @date May 8, 2018
  */
-/**
- * 使用POP3协议接收邮件
- */
-public class POP3ReceiveMailTest {
+@Service("receiveMaillServiceImpl")
+public class ReceiveMaillServiceImpl implements IReceiveMaillService {
+	/**
+	 * @Fields sendService : TODO
+	 */
+	@Autowired
+	private ISendMailService sendService;
 
 	/**
 	 * 文本解码
@@ -54,19 +64,18 @@ public class POP3ReceiveMailTest {
 	 * @return 解码后的文本
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String decodeText(final String encodeText) throws UnsupportedEncodingException {
+	private String decodeText(final String encodeText) throws UnsupportedEncodingException {
 		if (encodeText == null || "".equals(encodeText)) {
 			return "";
 		} else {
 			return MimeUtility.decodeText(encodeText);
 		}
 	}
-
-	/**
-	 * 解析邮件
-	 * @param messages 要解析的邮件列表
+	/* (non-Javadoc)
+	 * @see com.xinjian.web.service.mail.IReceiveMaillService#deleteMessage(javax.mail.Message[])
 	 */
-	public static void deleteMessage(final Message ...messages) throws MessagingException, IOException {
+	@Override
+	public void deleteMessage(final Message... messages) throws MessagingException, IOException {
 		if (messages == null || messages.length < 1) {
 			throw new MessagingException("未找到要解析的邮件!");
 		}
@@ -78,23 +87,17 @@ public class POP3ReceiveMailTest {
 			 *   邮件删除
 			 */
 			final Message message = messages[i];
-			final String subject = message.getSubject();
+			//final String subject = message.getSubject();
 			// set the DELETE flag to true
 			message.setFlag(Flags.Flag.DELETED, true);
-			System.out.println("Marked DELETE for message: " + subject);
-
-
 		}
-	}
 
-	/**
-	 * 获得邮件发件人
-	 * @param msg 邮件内容
-	 * @return 姓名 <Email地址>
-	 * @throws MessagingException
-	 * @throws UnsupportedEncodingException
+	}
+	/* (non-Javadoc)
+	 * @see com.xinjian.web.service.mail.IReceiveMaillService#getFrom(javax.mail.internet.MimeMessage)
 	 */
-	public static String getFrom(final MimeMessage msg) throws MessagingException, UnsupportedEncodingException {
+	@Override
+	public String getFrom(final MimeMessage msg) throws MessagingException, UnsupportedEncodingException {
 		String from = "";
 		final Address[] froms = msg.getFrom();
 		if (froms.length < 1) {
@@ -112,8 +115,6 @@ public class POP3ReceiveMailTest {
 
 		return from;
 	}
-
-
 	/**
 	 * 获得邮件文本内容
 	 * @param part 邮件体
@@ -121,7 +122,7 @@ public class POP3ReceiveMailTest {
 	 * @throws MessagingException
 	 * @throws IOException
 	 */
-	public static void getMailTextContent(final Part part, final StringBuffer content) throws MessagingException, IOException {
+	private void getMailTextContent(final Part part, final StringBuffer content) throws MessagingException, IOException {
 		//如果是文本类型的附件，通过getContent方法可以取到文本内容，但这不是我们需要的结果，所以在这里要做判断
 		final boolean isContainTextAttach = part.getContentType().indexOf("name") > 0;
 		if (part.isMimeType("text/*") && !isContainTextAttach) {
@@ -137,14 +138,13 @@ public class POP3ReceiveMailTest {
 			}
 		}
 	}
-
 	/**
 	 * 获得邮件的优先级
 	 * @param msg 邮件内容
 	 * @return 1(High):紧急  3:普通(Normal)  5:低(Low)
 	 * @throws MessagingException
 	 */
-	public static String getPriority(final MimeMessage msg) throws MessagingException {
+	private String getPriority(final MimeMessage msg) throws MessagingException {
 		String priority = "普通";
 		final String[] headers = msg.getHeader("X-Priority");
 		if (headers != null) {
@@ -159,18 +159,11 @@ public class POP3ReceiveMailTest {
 		}
 		return priority;
 	}
-
-	/**
-	 * 根据收件人类型，获取邮件收件人、抄送和密送地址。如果收件人类型为空，则获得所有的收件人
-	 * <p>Message.RecipientType.TO  收件人</p>
-	 * <p>Message.RecipientType.CC  抄送</p>
-	 * <p>Message.RecipientType.BCC 密送</p>
-	 * @param msg 邮件内容
-	 * @param type 收件人类型
-	 * @return 收件人1 <邮件地址1>, 收件人2 <邮件地址2>, ...
-	 * @throws MessagingException
+	/* (non-Javadoc)
+	 * @see com.xinjian.web.service.mail.IReceiveMaillService#getReceiveAddress(javax.mail.internet.MimeMessage, javax.mail.Message.RecipientType)
 	 */
-	public static String getReceiveAddress(final MimeMessage msg, final Message.RecipientType type) throws MessagingException {
+	@Override
+	public String getReceiveAddress(final MimeMessage msg, final RecipientType type) throws MessagingException {
 		final StringBuffer receiveAddress = new StringBuffer();
 		Address[] addresss = null;
 		if (type == null) {
@@ -191,14 +184,13 @@ public class POP3ReceiveMailTest {
 
 		return receiveAddress.toString();
 	}
-
 	/**
 	 * 获得邮件发送时间
 	 * @param msg 邮件内容
 	 * @return yyyy年mm月dd日 星期X HH:mm
 	 * @throws MessagingException
 	 */
-	public static String getSentDate(final MimeMessage msg, String pattern) throws MessagingException {
+	private String getSentDate(final MimeMessage msg, String pattern) throws MessagingException {
 		final Date receivedDate = msg.getSentDate();
 		if (receivedDate == null) {
 			return "";
@@ -216,7 +208,7 @@ public class POP3ReceiveMailTest {
 	 * @param msg 邮件内容
 	 * @return 解码后的邮件主题
 	 */
-	public static String getSubject(final MimeMessage msg) throws UnsupportedEncodingException, MessagingException {
+	private String getSubject(final MimeMessage msg) throws UnsupportedEncodingException, MessagingException {
 		return MimeUtility.decodeText(msg.getSubject());
 	}
 
@@ -227,7 +219,7 @@ public class POP3ReceiveMailTest {
 	 * @throws MessagingException
 	 * @throws IOException
 	 */
-	public static boolean isContainAttachment(final Part part) throws MessagingException, IOException {
+	private boolean isContainAttachment(final Part part) throws MessagingException, IOException {
 		boolean flag = false;
 		if (part.isMimeType("multipart/*")) {
 			final MimeMultipart multipart = (MimeMultipart) part.getContent();
@@ -259,14 +251,13 @@ public class POP3ReceiveMailTest {
 		}
 		return flag;
 	}
-
 	/**
 	 * 判断邮件是否需要阅读回执
 	 * @param msg 邮件内容
 	 * @return 需要回执返回true,否则返回false
 	 * @throws MessagingException
 	 */
-	public static boolean isReplySign(final MimeMessage msg) throws MessagingException {
+	private boolean isReplySign(final MimeMessage msg) throws MessagingException {
 		boolean replySign = false;
 		final String[] headers = msg.getHeader("Disposition-Notification-To");
 		if (headers != null) {
@@ -281,16 +272,15 @@ public class POP3ReceiveMailTest {
 	 * @return 如果邮件已读返回true,否则返回false
 	 * @throws MessagingException
 	 */
-	public static boolean isSeen(final MimeMessage msg) throws MessagingException {
+	private boolean isSeen(final MimeMessage msg) throws MessagingException {
 		return msg.getFlags().contains(Flags.Flag.SEEN);
 	}
-
 
 	/**
 	 * 解析邮件
 	 * @param messages 要解析的邮件列表
 	 */
-	public static void parseMessage(final Message ...messages) throws MessagingException, IOException {
+	private void parseMessage(final Message ...messages) throws MessagingException, IOException {
 		if (messages == null || messages.length < 1) {
 			throw new MessagingException("未找到要解析的邮件!");
 		}
@@ -307,13 +297,28 @@ public class POP3ReceiveMailTest {
 			System.out.println("邮件优先级：" + getPriority(msg));
 			System.out.println("是否需要回执：" + isReplySign(msg));
 			System.out.println("邮件大小：" + msg.getSize() * 1024 + "kb");
-			final boolean isContainerAttachment = isContainAttachment(msg);
-			System.out.println("是否包含附件：" + isContainerAttachment);
-			if (isContainerAttachment) {
-				//saveAttachment(msg, "f:\\mailTest\\"+msg.getSubject() + "_"+i+"_"); //保存附件
-			}
-			final StringBuffer content = new StringBuffer(30);
+
 			if(!isSeen(msg)) {
+
+				try {
+					sendService.sendMail("wechat_mail7@163.com");
+				} catch (final Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				final boolean isContainerAttachment = isContainAttachment(msg);
+				System.out.println("是否包含附件：" + isContainerAttachment);
+				if (isContainerAttachment) {
+					saveAttachment(msg, GlobalConstants.getString("mail.attachment.location")+msg.getSubject() + "_"+i+"_"); //保存附件
+				}
+				final StringBuffer content = new StringBuffer(30);
+				try {
+					Thread.sleep(1000*60*2);
+				} catch (final InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(Thread.currentThread());
 				getMailTextContent(msg, content);
 				System.out.println("邮件正文：" + (content.length() > 1000 ? content.substring(0,1000) + "..." : content));
 				System.out.println("------------------第" + msg.getMessageNumber() + "封邮件解析结束-------------------- ");
@@ -322,30 +327,23 @@ public class POP3ReceiveMailTest {
 
 		}
 	}
-
-	/**
-	 * 接收邮件
+	/* (non-Javadoc)
+	 * @see com.xinjian.web.service.mail.IReceiveMaillService#resceive()
 	 */
-	public static void resceive() throws Exception {
-		/**
-		 * 因为现在使用的是163邮箱 而163的 pop地址是　pop3.163.com　 端口是　110
-		 * 比如使用好未来企业邮箱 就需要换成 好未来邮箱的 pop服务器地址 pop.263.net  和   端口 110
-		 */
-		final String duankou = "143";// 端口号
-		final String servicePath = "imap.163.com";   // 服务器地址
-
+	@Override
+	public void resceive() throws Exception {
 
 		// 准备连接服务器的会话信息
 		final Properties props = new Properties();
-		props.setProperty("mail.store.protocol", "imap");       // 使用pop3协议
-		props.setProperty("mail.imap.port", duankou);           // 端口
-		props.setProperty("mail.imap.host", servicePath);       // pop3服务器
+		props.setProperty("mail.store.protocol", GlobalConstants.getString("mail.store.protocol"));       // 使用pop3协议
+		props.setProperty("mail.imap.port", GlobalConstants.getString("mail.imap.port"));           // 端口
+		props.setProperty("mail.imap.host", GlobalConstants.getString("mail.imap.host"));       // pop3服务器
 
 		// 创建Session实例对象
 		final Session session = Session.getInstance(props);
-		final Store store = session.getStore("imap");
-		store.connect("hxjlovechl", "Wo24ni2jiu"); //163邮箱程序登录属于第三方登录所以这里的密码是163给的授权密码而并非普通的登录密码
-
+		//session.setDebug(true);
+		final Store store = session.getStore(GlobalConstants.getString("mail.store.protocol"));
+		store.connect(GlobalConstants.getString("mail.login"), GlobalConstants.getString("mail.password")); //163邮箱程序登录属于第三方登录所以这里的密码是163给的授权密码而并非普通的登录密码
 
 
 		// 获得收件箱
@@ -364,7 +362,6 @@ public class POP3ReceiveMailTest {
 
 		// 获得收件箱中的邮件总数
 		System.out.println("邮件总数: " + folder.getMessageCount());
-
 		// 得到收件箱中的所有邮件,并解析
 		if(folder.getUnreadMessageCount()>0) {
 			final Message[] messages = folder.getMessages();
@@ -378,8 +375,8 @@ public class POP3ReceiveMailTest {
 		//释放资源
 		folder.close(true);
 		store.close();
-	}
 
+	}
 	/**
 	 * 保存附件
 	 * @param part 邮件中多个组合体中的其中一个组合体
@@ -389,7 +386,7 @@ public class POP3ReceiveMailTest {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static void saveAttachment(final Part part, final String destDir) throws UnsupportedEncodingException, MessagingException,
+	private void saveAttachment(final Part part, final String destDir) throws UnsupportedEncodingException, MessagingException,
 	FileNotFoundException, IOException {
 		if (part.isMimeType("multipart/*")) {
 			final Multipart multipart = (Multipart) part.getContent();    //复杂体邮件
@@ -425,7 +422,7 @@ public class POP3ReceiveMailTest {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private static void saveFile(final InputStream is, final String destDir, final String fileName)
+	private void saveFile(final InputStream is, final String destDir, final String fileName)
 			throws FileNotFoundException, IOException {
 		final BufferedInputStream bis = new BufferedInputStream(is);
 		final BufferedOutputStream bos = new BufferedOutputStream(

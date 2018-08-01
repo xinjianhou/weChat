@@ -19,7 +19,7 @@ public class InterfaceUrlInti {
 	 */
 	public synchronized static void init(){
 		final ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		Properties props = new Properties();
+		final Properties props = new Properties();
 		if(GlobalConstants.interfaceUrlProperties==null){
 			GlobalConstants.interfaceUrlProperties = new Properties();
 		}
@@ -31,8 +31,12 @@ public class InterfaceUrlInti {
 				GlobalConstants.interfaceUrlProperties.put(key, props.get(key));
 			}
 
-			props = new Properties();
 			in = cl.getResourceAsStream("property/wechat.properties");
+			props.load(in);
+			for(final Object key : props.keySet()){
+				GlobalConstants.interfaceUrlProperties.put(key, props.get(key));
+			}
+			in = cl.getResourceAsStream("property/mail.properties");
 			props.load(in);
 			for(final Object key : props.keySet()){
 				GlobalConstants.interfaceUrlProperties.put(key, props.get(key));

@@ -9,11 +9,16 @@
 
 package com.xinjian.web.util;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.xinjian.web.service.mail.IReceiveMaillService;
 
 /**
  * <p>Title: RmdeskServletContextListener</p>
@@ -40,21 +45,23 @@ public class RmdeskServletContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(final ServletContextEvent arg0) {
 		System.out.println("-------------进入---ServletContextEvent----------------");
-		final Timer timer = new Timer();
+		final IReceiveMaillService mailService = (IReceiveMaillService) WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext()).getBean("receiveMaillServiceImpl");
 
-		timer.schedule(new TimerTask() {
-
+		final Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
-					POP3ReceiveMailTest.resceive();
+					mailService.resceive();
 				} catch (final Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-		}, 1000,1000*60);//1000*60*60*24
+		};
+		final ScheduledExecutorService service = Executors
+				.newSingleThreadScheduledExecutor();
+		// 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
+		service.scheduleAtFixedRate(runnable, 10, 10, TimeUnit.SECONDS);
 
 	}
 
